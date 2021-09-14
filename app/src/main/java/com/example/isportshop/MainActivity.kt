@@ -34,11 +34,11 @@ class MainActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
+        /*val currentUser = auth.currentUser
         if(currentUser != null){
             val intent=Intent(this,MenuActivity::class.java)
             startActivity(intent)
-        }
+        }*/
     }
 
     private fun ValidateInputsLogin():Boolean{

@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class RegisterActivity : AppCompatActivity() {
@@ -17,6 +18,8 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var email : EditText
     lateinit var password : EditText
     lateinit var confirmPassword : EditText
+    lateinit var name : EditText
+    lateinit var lastName : EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -27,6 +30,8 @@ class RegisterActivity : AppCompatActivity() {
         email = findViewById(R.id.txtEmailRegister)
         password = findViewById(R.id.txtPasswordRegister)
         confirmPassword = findViewById(R.id.txtPasswordRegister2)
+        name = findViewById(R.id.txtNameRegister)
+        lastName = findViewById(R.id.txtLastNameRegister)
     }
 
     private fun ValidateInputsRegister():Boolean{
@@ -39,6 +44,12 @@ class RegisterActivity : AppCompatActivity() {
             flag = false
         }
         if(TextUtils.isEmpty(confirmPassword.text.toString())){
+            flag = false
+        }
+        if(TextUtils.isEmpty(name.text.toString())){
+            flag = false
+        }
+        if(TextUtils.isEmpty(lastName.text.toString())){
             flag = false
         }
 
@@ -55,8 +66,28 @@ class RegisterActivity : AppCompatActivity() {
                 auth.createUserWithEmailAndPassword(email.text.toString(),password.text.toString())
                     .addOnCompleteListener(this) {
                         if(it.isSuccessful){
-                            Log.d("FIREBASE","Register went correct.")
-                            Toast.makeText(this,"User registered",Toast.LENGTH_SHORT).show()
+                            //Add the user to the Users collection
+                            val initialBalance = 5000
+                            var newUser = hashMapOf(
+                                "name" to name.text.toString(),
+                                "lastname" to lastName.text.toString(),
+                                "email" to email.text.toString(),
+                                "password" to password.text.toString(),
+                                "balance" to initialBalance
+                            )
+                            val db = Firebase.firestore
+                            db.collection("users")
+                                .add(newUser)
+                                .addOnSuccessListener {
+                                    Log.d("FIREBASE","Register went correct.")
+                                    Toast.makeText(this,"User registered",Toast.LENGTH_SHORT).show()
+                                    val intent= Intent(this,MainActivity::class.java)
+                                    startActivity(intent)
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.w("FIREBASE", "Error adding document", e)
+                                }
+
                         }else{
                             Log.e("FIREBASE","Register went wrong: ${it.exception?.message}.")
                             Toast.makeText(this,"User already exist",Toast.LENGTH_SHORT).show()
@@ -65,7 +96,7 @@ class RegisterActivity : AppCompatActivity() {
             }
         }else{
             Log.w("INPUTS","Inputs missing in register.")
-            Toast.makeText(this,"Email or password missing",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,"Fill the blank inputs",Toast.LENGTH_SHORT).show()
         }
 
     }
