@@ -47,7 +47,7 @@ class RegisterActivity : AppCompatActivity() {
 
     public fun Register(v:View?){
         if(ValidateInputsRegister()){
-            if(password.text.toString() !== confirmPassword.text.toString()){
+            if(!password.text.toString().contentEquals(confirmPassword.text.toString())){
                 Log.e("INPUTS","Password doesn't match.")
                 Toast.makeText(this,"Incorrect password",Toast.LENGTH_SHORT).show()
                 confirmPassword.setText("");
