@@ -4,8 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/HP/AndroidStudioProjects/iSportShop/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/Users/HP/AndroidStudioProjects/iSportShop/app/src/main/res/layout/activity_menu.xml" value="0.11503623188405797" />
-        <entry key="..\:/Users/HP/AndroidStudioProjects/iSportShop/app/src/main/res/layout/activity_register.xml" value="0.25" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/iSportShop/app/src/main/res/layout/activity_menu.xml" value="0.22" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/iSportShop/app/src/main/res/layout/activity_recover_password.xml" value="0.19067028985507245" />
+        <entry key="..\:/Users/HP/AndroidStudioProjects/iSportShop/app/src/main/res/layout/activity_register.xml" value="0.2" />
       </map>
     </option>
   </component>

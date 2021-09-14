@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ISportShop">
         <activity
+            android:name=".RecoverPasswordActivity"
+            android:exported="true" />
+        <activity
             android:name=".MenuActivity"
             android:exported="true" />
         <activity
