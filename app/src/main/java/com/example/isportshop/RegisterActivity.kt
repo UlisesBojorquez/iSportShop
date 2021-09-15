@@ -76,13 +76,12 @@ class RegisterActivity : AppCompatActivity() {
                                 "balance" to initialBalance
                             )
                             val db = Firebase.firestore
-                            db.collection("users")
-                                .add(newUser)
+                            db.collection("users").document(email.text.toString())
+                                .set(newUser)
                                 .addOnSuccessListener {
                                     Log.d("FIREBASE","Register went correct.")
                                     Toast.makeText(this,"User registered",Toast.LENGTH_SHORT).show()
-                                    val intent= Intent(this,MainActivity::class.java)
-                                    startActivity(intent)
+                                    finish()
                                 }
                                 .addOnFailureListener { e ->
                                     Log.w("FIREBASE", "Error adding document", e)
@@ -102,8 +101,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     public fun MoveLogIn(v: View?){
-        val intent= Intent(this,MainActivity::class.java)
-        startActivity(intent)
+        finish()
     }
 
 

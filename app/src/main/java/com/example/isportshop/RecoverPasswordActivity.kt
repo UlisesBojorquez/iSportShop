@@ -33,8 +33,7 @@ class RecoverPasswordActivity : AppCompatActivity() {
                     if(it.isSuccessful){
                         Log.d("INPUTS","The password was sent.")
                         Toast.makeText(this,"Password send", Toast.LENGTH_SHORT).show()
-                        val intent= Intent(this,MainActivity::class.java)
-                        startActivity(intent)
+                        finish()
                     }else{
                         Log.d("FIREBASE","The email is incorrect in recovery password.")
                         Toast.makeText(this,"Incorrect email", Toast.LENGTH_SHORT).show()

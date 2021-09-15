@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
@@ -58,7 +59,9 @@ class MainActivity : AppCompatActivity() {
                 .addOnCompleteListener(this){
                     if(it.isSuccessful){
                         Log.d("FIREBASE","Successful Login.")
+                        //Send info through the intent to the menu activity
                         val intent=Intent(this,MenuActivity::class.java)
+                        intent.putExtra("userInfo",email.text.toString())
                         startActivity(intent)
                     }else{
                         Log.e("FIREBASE","Login went wrong: ${it.exception?.message}.")
