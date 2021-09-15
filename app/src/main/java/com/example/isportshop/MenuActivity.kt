@@ -3,7 +3,9 @@ package com.example.isportshop
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.isportshop.fragments.Cart
 import com.example.isportshop.fragments.Menu
@@ -20,18 +22,30 @@ class MenuActivity : AppCompatActivity() {
     private val menuFragment = Menu()
     private val cartFragment = Cart()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
+
         //Fragment
         replaceFragment(menuFragment)
         //Events onclick of fragments
         navigation = findViewById(R.id.bottom_Navigation)
         navigation.setOnItemSelectedListener{
             when(it.itemId){
-                R.id.ic_profile -> replaceFragment(profileFragment)
-                R.id.ic_menu -> replaceFragment(menuFragment)
-                R.id.ic_cart -> replaceFragment(cartFragment)
+                R.id.ic_profile -> {
+                    val userData= intent.getStringExtra("userInfo")
+                    var bundle=Bundle()
+                    bundle.putString("userProfile",userData)
+                    profileFragment.arguments = bundle
+                    replaceFragment(profileFragment)
+                }
+                R.id.ic_menu -> {
+                    replaceFragment(menuFragment)
+                }
+                R.id.ic_cart -> {
+                    replaceFragment(cartFragment)
+                }
             }
             true
         }

@@ -1,33 +1,26 @@
 package com.example.isportshop.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.example.isportshop.R
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [Profile.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Profile : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    lateinit var name : TextView
+    lateinit var lastname : TextView
+    lateinit var email : TextView
+    lateinit var password : TextView
+    lateinit var balance : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -38,23 +31,35 @@ class Profile : Fragment() {
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Profile.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Profile().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        name = view.findViewById(R.id.txtNameProfile)
+        lastname = view.findViewById(R.id.txtLastnameProfile)
+        email = view.findViewById(R.id.txtEmailProfile)
+        password = view.findViewById(R.id.txtPasswordProfile)
+        balance = view.findViewById(R.id.txtBalanceProfile)
+
+        arguments?.let {
+            if(it.containsKey("userProfile")){
+                Log.d("fragment",it.getString("userProfile").toString())
+                //Obtain info from the database
+                var doc=it.getString("userProfile").toString()
+                val db = Firebase.firestore
+                db.collection("users").document(doc)
+                    .get()
+                    .addOnSuccessListener { document ->
+                        var data = document?.data
+                        Log.d("PROFILE", "${data.toString()}")
+                        name.text = document["name"].toString()
+                        lastname.text = document["lastname"].toString()
+                        email.text = document["email"].toString()
+                        password.text = document["password"].toString()
+                        balance.text = document["balance"].toString()
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w("FIREBASE", "Error on read the document", e)
+                    }
             }
+        }
     }
 }
