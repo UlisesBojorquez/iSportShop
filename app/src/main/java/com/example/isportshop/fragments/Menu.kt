@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import com.example.isportshop.R
 import com.example.isportshop.classes.Product
 import com.example.isportshop.classes.ProductDataSource
 import com.example.isportshop.classes.ProductsAdapter
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -34,6 +36,8 @@ class Menu : Fragment() {
     private var param2: String? = null
 
     lateinit var recyclerView : RecyclerView
+    lateinit var progressBar : ProgressBar
+    lateinit var searchBar : TextInputEditText
     private lateinit var gridLayoutManager: GridLayoutManager
     //private var listProduct = arrayListOf<Product>()
 
@@ -54,6 +58,7 @@ class Menu : Fragment() {
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_menu, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,8 +72,9 @@ class Menu : Fragment() {
         gridLayoutManager = GridLayoutManager(context, 2)
         recyclerView.layoutManager = gridLayoutManager
         recyclerView.adapter = ProductsAdapter(products)*/
-
+        searchBar=view.findViewById(R.id.searchBar)
         recyclerView=view.findViewById(R.id.recycler_view)
+        progressBar=view.findViewById(R.id.progressBar)
         gridLayoutManager = GridLayoutManager(context, 2)
         recyclerView.layoutManager = gridLayoutManager
         var listProduct = arrayListOf<Product>()
@@ -93,15 +99,36 @@ class Menu : Fragment() {
                 listProduct = list.clone() as ArrayList<Product>
                 recyclerView.adapter = ProductsAdapter(listProduct)
                 Log.d(ContentValues.TAG, "Successful GET of products")
+                progressBar.visibility = View.GONE
             }
             .addOnFailureListener { exception ->
                 Log.w(ContentValues.TAG, "Error getting documents: ", exception)
             }
+    }
 
-
-
-
-
+    fun searchMethod(){
+        var term = searchBar.text.toString()
+        var listProduct = arrayListOf<Product>()
+        progressBar.visibility = View.VISIBLE
+        Firebase.firestore.collection("items").get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    if(document["name"].toString().equals(term)){
+                        listProduct.add(Product(
+                            document["name"].toString(),
+                            document["description"].toString(),
+                            document["price"].toString().toDouble(),
+                            document["image"].toString(),
+                            document["stock"].toString().toInt()
+                        ));
+                    }
+                }
+                recyclerView.adapter = ProductsAdapter(listProduct)
+                Log.d(ContentValues.TAG, "Successful GET of products")
+                progressBar.visibility = View.GONE
+            }.addOnFailureListener { exception ->
+                Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+            }
     }
 
     companion object {

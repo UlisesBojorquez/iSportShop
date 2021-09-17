@@ -63,6 +63,11 @@ class MenuActivity : AppCompatActivity() {
         }
     }
 
+    fun searchMethod(view: View?){
+        menuFragment.searchMethod()
+    }
+
+
 
 
     public fun LogOut(v:View?){
