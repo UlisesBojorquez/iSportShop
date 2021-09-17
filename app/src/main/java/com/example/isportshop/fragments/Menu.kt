@@ -1,11 +1,22 @@
 package com.example.isportshop.fragments
 
+import android.content.ContentValues
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.isportshop.R
+import com.example.isportshop.classes.Product
+import com.example.isportshop.classes.ProductDataSource
+import com.example.isportshop.classes.ProductsAdapter
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +33,11 @@ class Menu : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    lateinit var recyclerView : RecyclerView
+    private lateinit var gridLayoutManager: GridLayoutManager
+    //private var listProduct = arrayListOf<Product>()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -34,8 +50,58 @@ class Menu : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_menu, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        /*val products = arrayListOf<Product>()
+        for(i in 0..100){
+            products.add(Product("Organic apple","this an image",1.99,"https://firebasestorage.googleapis.com/v0/b/isportshop-8959b.appspot.com/o/TqitZw7wrKkA0MaIdCio%2Fadidas_ball.jpg?alt=media&token=34434050-c98c-4698-b1d3-21ddc6895292",4))
+        }
+        recyclerView=view.findViewById(R.id.recycler_view)
+        gridLayoutManager = GridLayoutManager(context, 2)
+        recyclerView.layoutManager = gridLayoutManager
+        recyclerView.adapter = ProductsAdapter(products)*/
+
+        recyclerView=view.findViewById(R.id.recycler_view)
+        gridLayoutManager = GridLayoutManager(context, 2)
+        recyclerView.layoutManager = gridLayoutManager
+        var listProduct = arrayListOf<Product>()
+        val db = Firebase.firestore
+        db.collection("items")
+            .get()
+            .addOnSuccessListener { documents ->
+                val list= arrayListOf<Product>()
+                //listProduct.clear()
+                for (document in documents) {
+                    list.add(
+                        Product(
+                            document["name"].toString(),
+                            document["description"].toString(),
+                            document["price"].toString().toDouble(),
+                            document["image"].toString(),
+                            document["stock"].toString().toInt()
+                        )
+                    )
+                }
+
+                listProduct = list.clone() as ArrayList<Product>
+                recyclerView.adapter = ProductsAdapter(listProduct)
+                Log.d(ContentValues.TAG, "Successful GET of products")
+            }
+            .addOnFailureListener { exception ->
+                Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+            }
+
+
+
+
+
     }
 
     companion object {
@@ -58,3 +124,4 @@ class Menu : Fragment() {
             }
     }
 }
+
