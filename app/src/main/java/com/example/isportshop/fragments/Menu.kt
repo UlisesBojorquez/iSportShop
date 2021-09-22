@@ -107,28 +107,126 @@ class Menu : Fragment() {
     }
 
     fun searchMethod(){
-        var term = searchBar.text.toString()
+        var terms = searchBar.text.toString().lowercase().split(" ")
+        var term = searchBar.text.toString().lowercase()
         var listProduct = arrayListOf<Product>()
         progressBar.visibility = View.VISIBLE
-        Firebase.firestore.collection("items").get()
-            .addOnSuccessListener { documents ->
+        Log.d(ContentValues.TAG, term)
+        if(term == ""){
+            Firebase.firestore.collection("items")
+                .get()
+                .addOnSuccessListener { documents ->
+                    val list= arrayListOf<Product>()
+                    //listProduct.clear()
+                    for (document in documents) {
+                        list.add(
+                            Product(
+                                document["name"].toString(),
+                                document["description"].toString(),
+                                document["price"].toString().toDouble(),
+                                document["image"].toString(),
+                                document["stock"].toString().toInt()
+                            )
+                        )
+                    }
+
+                    listProduct = list.clone() as ArrayList<Product>
+                    recyclerView.adapter = ProductsAdapter(listProduct)
+                    Log.d(ContentValues.TAG, "Successful GET of products")
+                    progressBar.visibility = View.GONE
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+                }
+        }else{
+
+            //Search by name explicit
+            Firebase.firestore.collection("items").get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        if(document["name"].toString().lowercase().equals(term)) {
+                            listProduct.add(
+                                Product(
+                                    document["name"].toString(),
+                                    document["description"].toString(),
+                                    document["price"].toString().toDouble(),
+                                    document["image"].toString(),
+                                    document["stock"].toString().toInt()
+                                )
+                            );
+                        }
+                    }
+                    Log.d(ContentValues.TAG, "Successful GET of products on names")
+                }.addOnFailureListener { exception ->
+                    Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+                }
+
+
+            //Search by name divided
+            Firebase.firestore.collection("items").get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        if(!listProduct.contains(Product(
+                                document["name"].toString(),
+                                document["description"].toString(),
+                                document["price"].toString().toDouble(),
+                                document["image"].toString(),
+                                document["stock"].toString().toInt()
+                            ))
+                        ) {
+                            var nameDocument = document["name"].toString().lowercase().split(" ")
+                            for (word in terms) {
+                                if (nameDocument.indexOf(word) != -1) {
+                                    listProduct.add(
+                                        Product(
+                                            document["name"].toString(),
+                                            document["description"].toString(),
+                                            document["price"].toString().toDouble(),
+                                            document["image"].toString(),
+                                            document["stock"].toString().toInt()
+                                        )
+                                    );
+                                }
+                            }
+                        }
+                    }
+                    Log.d(ContentValues.TAG, "Successful GET of products on names")
+                }.addOnFailureListener { exception ->
+                    Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+                }
+
+
+            //Search by category
+            Firebase.firestore.collection("items").whereArrayContainsAny("category", terms).get().addOnSuccessListener { documents ->
                 for (document in documents) {
-                    if(document["name"].toString().equals(term)){
-                        listProduct.add(Product(
+                    if(!listProduct.contains(Product(
                             document["name"].toString(),
                             document["description"].toString(),
                             document["price"].toString().toDouble(),
                             document["image"].toString(),
                             document["stock"].toString().toInt()
-                        ));
+                        ))
+                    ) {
+                    listProduct.add(
+                        Product(
+                            document["name"].toString(),
+                            document["description"].toString(),
+                            document["price"].toString().toDouble(),
+                            document["image"].toString(),
+                            document["stock"].toString().toInt()
+                        )
+                    );
                     }
                 }
                 recyclerView.adapter = ProductsAdapter(listProduct)
-                Log.d(ContentValues.TAG, "Successful GET of products")
+                Log.d(ContentValues.TAG, "Successful GET of products on categories")
                 progressBar.visibility = View.GONE
             }.addOnFailureListener { exception ->
                 Log.w(ContentValues.TAG, "Error getting documents: ", exception)
             }
+        }
+
+
     }
 
     companion object {
