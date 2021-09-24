@@ -1,5 +1,6 @@
 package com.example.isportshop.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,12 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.isportshop.MainActivity
 import com.example.isportshop.R
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class Profile : Fragment() {
-
+    private lateinit var auth: FirebaseAuth
     lateinit var name : TextView
     lateinit var lastname : TextView
     lateinit var email : TextView
@@ -38,6 +41,7 @@ class Profile : Fragment() {
         email = view.findViewById(R.id.txtEmailProfile)
         password = view.findViewById(R.id.txtPasswordProfile)
         balance = view.findViewById(R.id.txtBalanceProfile)
+
 
         arguments?.let {
             if(it.containsKey("userProfile")){
