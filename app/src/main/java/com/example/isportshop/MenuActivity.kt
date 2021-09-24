@@ -67,9 +67,6 @@ class MenuActivity : AppCompatActivity() {
         menuFragment.searchMethod()
     }
 
-
-
-
     public fun LogOut(v:View?){
         auth.signOut()
         val intent=Intent(this,MainActivity::class.java)
