@@ -75,14 +75,12 @@ class Cart : Fragment() {
 
                         this.itemsList = document["cartItems"] as ArrayList<String>
 
-
                         //name.text = document["name"].toString()
                     }
                     .addOnFailureListener { e ->
                         Log.w("FIREBASE", "Error on read the document", e)
                     }
             }
-
         }
 
 
@@ -94,12 +92,6 @@ class Cart : Fragment() {
 
         //Obtener items de la bd
 
-        //val document: DocumentSnapshot = task.getResult()
-
-
-
-
-        //Search by name divided
         Firebase.firestore.collection("items").get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
@@ -134,11 +126,7 @@ class Cart : Fragment() {
             }.addOnFailureListener { exception ->
                 Log.w(ContentValues.TAG, "Error getting documents: ", exception)
             }
-
-
     }
-
-
 
 
     companion object {
