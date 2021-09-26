@@ -42,8 +42,9 @@ class Profile : Fragment() {
         password = view.findViewById(R.id.txtPasswordProfile)
         balance = view.findViewById(R.id.txtBalanceProfile)
 
-
+        Log.d("estoooooooooooooooo", arguments.toString())
         arguments?.let {
+
             if(it.containsKey("userProfile")){
                 Log.d("fragment",it.getString("userProfile").toString())
                 //Obtain info from the database

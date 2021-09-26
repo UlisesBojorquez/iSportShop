@@ -14,7 +14,7 @@
         android:layout_height="67dp"
         android:layout_marginBottom="4dp"
         android:backgroundTint="#E11212"
-        android:onClick="showDialog"
+        android:onClick="addToCart"
         android:text="ADD TO CART"
         app:cornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
