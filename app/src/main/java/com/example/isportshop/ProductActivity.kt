@@ -47,8 +47,8 @@ class ProductActivity : AppCompatActivity() {
         nameP.setText(intent.getStringExtra("name"))
         Picasso.get().load(intent.getStringExtra("image")).into(image)
         description.setText(intent.getStringExtra("description"))
-        price.setText(intent.getStringExtra("price"))
-        stock.setText(intent.getStringExtra("stock"))
+        price.setText("Price: $" + intent.getStringExtra("price"))
+        stock.setText("Stock: " + intent.getStringExtra("stock"))
 
         productName = intent.getStringExtra("name").toString()
 
