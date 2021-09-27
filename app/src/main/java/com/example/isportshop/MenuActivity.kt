@@ -44,6 +44,10 @@ class MenuActivity : AppCompatActivity() {
                     replaceFragment(menuFragment)
                 }
                 R.id.ic_cart -> {
+                    val userData= intent.getStringExtra("userInfo")
+                    var bundle=Bundle()
+                    bundle.putString("userCart",userData)
+                    cartFragment.arguments = bundle
                     replaceFragment(cartFragment)
                 }
             }
@@ -66,7 +70,11 @@ class MenuActivity : AppCompatActivity() {
     fun searchMethod(view: View?){
         menuFragment.searchMethod()
     }
-
+    /*
+        fun displayCartItemsMethod(view: View?){
+            cartFragment.displayCartItemsMethod()
+        }
+    */
     public fun LogOut(v:View?){
         auth.signOut()
         val intent=Intent(this,MainActivity::class.java)

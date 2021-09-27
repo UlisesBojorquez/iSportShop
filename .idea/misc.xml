@@ -3,6 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/ISC/7mo semestre/AplicacionesMoviles/Proyecto/iSportShop/app/src/main/res/drawable/ic_delete.xml" value="0.5007625826131165" />
+        <entry key="..\:/ISC/7mo semestre/AplicacionesMoviles/Proyecto/iSportShop/app/src/main/res/layout/activity_main.xml" value="0.48802083333333335" />
+        <entry key="..\:/ISC/7mo semestre/AplicacionesMoviles/Proyecto/iSportShop/app/src/main/res/layout/activity_menu.xml" value="0.536" />
+        <entry key="..\:/ISC/7mo semestre/AplicacionesMoviles/Proyecto/iSportShop/app/src/main/res/layout/activity_product.xml" value="0.4" />
+        <entry key="..\:/ISC/7mo semestre/AplicacionesMoviles/Proyecto/iSportShop/app/src/main/res/layout/activity_products_adapter_cart.xml" value="0.2324074074074074" />
+        <entry key="..\:/ISC/7mo semestre/AplicacionesMoviles/Proyecto/iSportShop/app/src/main/res/layout/activity_recover_password.xml" value="0.48802083333333335" />
+        <entry key="..\:/ISC/7mo semestre/AplicacionesMoviles/Proyecto/iSportShop/app/src/main/res/layout/activity_register.xml" value="0.48802083333333335" />
+        <entry key="..\:/ISC/7mo semestre/AplicacionesMoviles/Proyecto/iSportShop/app/src/main/res/layout/fragment_cart.xml" value="0.4" />
+        <entry key="..\:/ISC/7mo semestre/AplicacionesMoviles/Proyecto/iSportShop/app/src/main/res/layout/fragment_menu.xml" value="0.48802083333333335" />
+        <entry key="..\:/ISC/7mo semestre/AplicacionesMoviles/Proyecto/iSportShop/app/src/main/res/layout/fragment_profile.xml" value="0.48802083333333335" />
+        <entry key="..\:/ISC/7mo semestre/AplicacionesMoviles/Proyecto/iSportShop/app/src/main/res/layout/product_card.xml" value="0.264" />
+        <entry key="..\:/ISC/7mo semestre/AplicacionesMoviles/Proyecto/iSportShop/app/src/main/res/layout/product_card_cart.xml" value="0.25" />
+        <entry key="..\:/ISC/7mo semestre/AplicacionesMoviles/Proyecto/iSportShop/app/src/main/res/layout/product_card_cart2.xml" value="0.2324074074074074" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/iSportShop/app/src/main/res/drawable/ic_baseline_home.xml" value="0.2203125" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/iSportShop/app/src/main/res/drawable/ic_home.xml" value="0.2203125" />
         <entry key="..\:/Users/HP/AndroidStudioProjects/iSportShop/app/src/main/res/drawable/ic_search.xml" value="0.1125" />

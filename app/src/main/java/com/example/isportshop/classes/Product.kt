@@ -5,7 +5,7 @@ data class Product (
     var description: String,
     var price: Double,
     var image: String,
-    var stock: Int
+    var stock: Int,
 ){
 
 }
