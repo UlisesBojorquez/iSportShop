@@ -70,11 +70,11 @@ class MenuActivity : AppCompatActivity() {
     fun searchMethod(view: View?){
         menuFragment.searchMethod()
     }
-/*
-    fun displayCartItemsMethod(view: View?){
-        cartFragment.displayCartItemsMethod()
-    }
-*/
+    /*
+        fun displayCartItemsMethod(view: View?){
+            cartFragment.displayCartItemsMethod()
+        }
+    */
     public fun LogOut(v:View?){
         auth.signOut()
         val intent=Intent(this,MainActivity::class.java)
