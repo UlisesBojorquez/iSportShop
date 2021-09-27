@@ -31,7 +31,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class Cart : Fragment() {
-    var itemsList = arrayListOf<String>()
+    var itemsList = mutableMapOf<String, Number>()
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -73,7 +73,7 @@ class Cart : Fragment() {
                         var data = document?.data
                         Log.d("PROFILE", "${data.toString()}")
 
-                        this.itemsList = document["cartItems"] as ArrayList<String>
+                        this.itemsList = document["cartItems"] as MutableMap<String, Number>
 
                         //name.text = document["name"].toString()
                     }
@@ -106,8 +106,8 @@ class Cart : Fragment() {
                     ) {
                         var nameDocument = document["name"].toString()
                         for (item in this.itemsList) {
-                            Log.d("entroooooooooo", item)
-                            if (nameDocument.equals(item)) {  /*Si no funciona, cambiar aqui*/
+                            //Log.d("entroooooooooo", item)
+                            if (nameDocument.equals(item.key)) {  /*Si no funciona, cambiar aqui*/
                                 listProduct.add(
                                     Product(
                                         document["name"].toString(),

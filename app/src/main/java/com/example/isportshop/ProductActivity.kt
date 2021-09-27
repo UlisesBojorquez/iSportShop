@@ -74,14 +74,20 @@ class ProductActivity : AppCompatActivity() {
 
                 val email = provider.email
 
-                var listProduct = arrayListOf<String>()
+                var listProduct = mutableMapOf<String, Number>()
 
                 Firebase.firestore.collection("users").get()
                     .addOnSuccessListener { documents ->
                         for (document in documents) {
                             if(document["email"].toString().equals(email)) {
-                                listProduct = document["cartItems"] as ArrayList<String>
-                                listProduct.add(productName)
+                                listProduct = document["cartItems"] as MutableMap<String, Number>
+                                if(listProduct.containsKey(productName)){
+                                    var productAmount : Number = listProduct.getValue(productName)
+                                    var productAmountInt : Int = productAmount.toInt()
+                                    productAmountInt++
+                                    productAmount = productAmountInt
+                                    listProduct.put(productName, productAmount)
+                                }
                             }
                         }
                         val stringEmail = email.toString()
@@ -96,18 +102,7 @@ class ProductActivity : AppCompatActivity() {
 
                     }
             }
-
-
-
-
-
-
-
         }
-
-
-
-
     }
 
 
