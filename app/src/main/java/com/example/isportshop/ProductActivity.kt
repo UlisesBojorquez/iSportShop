@@ -57,7 +57,7 @@ class ProductActivity : AppCompatActivity() {
 
     public fun addToCart(v: View?){
         AlertDialog.Builder(this)
-            .setMessage("Added to your shopping cart")
+            .setMessage("Added to your wish list")
             .setPositiveButton("OK") { p0, p1 ->
             }
             .create()
