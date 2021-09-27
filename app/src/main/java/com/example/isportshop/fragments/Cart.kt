@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.isportshop.R
 import com.example.isportshop.classes.Product
-import com.example.isportshop.classes.ProductCart
 import com.example.isportshop.classes.ProductsAdapter
-import com.example.isportshop.classes.ProductsAdapterCart
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.firestore.DocumentSnapshot
+
+
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -86,7 +87,7 @@ class Cart : Fragment() {
         recyclerView=view.findViewById(R.id.recycler_view_cart)
         gridLayoutManager = GridLayoutManager(context, 2)
         recyclerView.layoutManager = gridLayoutManager
-        var listProduct = arrayListOf<ProductCart>()
+        var listProduct = arrayListOf<Product>()
         val db = Firebase.firestore
 
         //Obtener items de la bd
@@ -95,7 +96,7 @@ class Cart : Fragment() {
             .addOnSuccessListener { documents ->
                 for (document in documents) {
 
-                    if(!listProduct.contains(ProductCart(
+                    if(!listProduct.contains(Product(
                             document["name"].toString(),
                             document["description"].toString(),
                             document["price"].toString().toDouble(),
@@ -108,7 +109,7 @@ class Cart : Fragment() {
                             //Log.d("entroooooooooo", item)
                             if (nameDocument.equals(item.key)) {  /*Si no funciona, cambiar aqui*/
                                 listProduct.add(
-                                    ProductCart(
+                                    Product(
                                         document["name"].toString(),
                                         document["description"].toString(),
                                         document["price"].toString().toDouble(),
@@ -120,7 +121,7 @@ class Cart : Fragment() {
                         }
                     }
                 }
-                recyclerView.adapter = ProductsAdapterCart(listProduct)
+                recyclerView.adapter = ProductsAdapter(listProduct)
                 Log.d(ContentValues.TAG, "Successful GET of products on names")
             }.addOnFailureListener { exception ->
                 Log.w(ContentValues.TAG, "Error getting documents: ", exception)

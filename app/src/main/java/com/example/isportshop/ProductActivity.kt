@@ -1,12 +1,21 @@
 package com.example.isportshop
 
+import android.app.Dialog
+import android.content.ContentValues
+import android.content.DialogInterface
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.isportshop.classes.Product
+import com.example.isportshop.classes.ProductsAdapter
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -78,6 +87,9 @@ class ProductActivity : AppCompatActivity() {
                                     productAmountInt++
                                     productAmount = productAmountInt
                                     listProduct.put(productName, productAmount)
+                                }else{
+                                    var productAmount : Number = 1
+                                    listProduct.put(productName, productAmount)
                                 }
                             }
                         }
@@ -89,12 +101,8 @@ class ProductActivity : AppCompatActivity() {
                             .update("cartItems", listProduct)
                             .addOnSuccessListener { Log.d("Res", "DocumentSnapshot successfully updated!") }
                             .addOnFailureListener { e -> Log.w("Res", "Error updating document", e) }
-
-
                     }
             }
         }
     }
-
-
 }
