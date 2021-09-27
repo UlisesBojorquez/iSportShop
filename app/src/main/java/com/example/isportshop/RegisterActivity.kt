@@ -63,6 +63,7 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this,"Incorrect password",Toast.LENGTH_SHORT).show()
                 confirmPassword.setText("");
             }else{
+                var cartItemsMap = mutableMapOf<String, Number>()
                 auth.createUserWithEmailAndPassword(email.text.toString(),password.text.toString())
                     .addOnCompleteListener(this) {
                         if(it.isSuccessful){
@@ -73,7 +74,8 @@ class RegisterActivity : AppCompatActivity() {
                                 "lastname" to lastName.text.toString(),
                                 "email" to email.text.toString(),
                                 "password" to password.text.toString(),
-                                "balance" to initialBalance
+                                "balance" to initialBalance,
+                                "cartItems" to cartItemsMap
                             )
                             val db = Firebase.firestore
                             db.collection("users").document(email.text.toString())
