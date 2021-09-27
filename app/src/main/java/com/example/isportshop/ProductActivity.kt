@@ -3,6 +3,7 @@ package com.example.isportshop
 import android.app.Dialog
 import android.content.ContentValues
 import android.content.DialogInterface
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +12,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.isportshop.classes.Product
+import com.example.isportshop.classes.ProductsAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -20,17 +23,18 @@ import com.squareup.picasso.Picasso
 
 class ProductActivity : AppCompatActivity() {
 
-
-
     lateinit var nameP : TextView
     lateinit var image : ImageView
     lateinit var description : TextView
     lateinit var price : TextView
     lateinit var stock : TextView
+    var productName = ""
+    var itemsList = arrayListOf<String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_product)
 
         nameP=findViewById(R.id.product_name_detail)
@@ -46,11 +50,9 @@ class ProductActivity : AppCompatActivity() {
         price.setText(intent.getStringExtra("price"))
         stock.setText(intent.getStringExtra("stock"))
 
-
+        productName = intent.getStringExtra("name").toString()
 
     }
-
-
 
 
     public fun addToCart(v: View?){
@@ -61,5 +63,52 @@ class ProductActivity : AppCompatActivity() {
             .create()
             .show()
 
+        val user = Firebase.auth.currentUser
+        user?.let {
+            for(provider in it.providerData){
+                // Id of the provider (ex: google.com)
+                val providerId = provider.providerId
+
+                // UID specific to the provider
+                val uid = provider.uid
+
+                val email = provider.email
+
+                var listProduct = arrayListOf<String>()
+
+                Firebase.firestore.collection("users").get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            if(document["email"].toString().equals(email)) {
+                                listProduct = document["cartItems"] as ArrayList<String>
+                                listProduct.add(productName)
+                            }
+                        }
+                        val stringEmail = email.toString()
+                        val cartItemsRef = Firebase.firestore.collection("users").document(stringEmail)
+
+                        // Set the "isCapital" field of the city 'DC'
+                        cartItemsRef
+                            .update("cartItems", listProduct)
+                            .addOnSuccessListener { Log.d("Res", "DocumentSnapshot successfully updated!") }
+                            .addOnFailureListener { e -> Log.w("Res", "Error updating document", e) }
+
+
+                    }
+            }
+
+
+
+
+
+
+
+        }
+
+
+
+
     }
+
+
 }
