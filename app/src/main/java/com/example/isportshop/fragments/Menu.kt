@@ -34,12 +34,13 @@ class Menu : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    var stateSearch = true
 
     lateinit var recyclerView : RecyclerView
     lateinit var progressBar : ProgressBar
     lateinit var searchBar : TextInputEditText
+
     private lateinit var gridLayoutManager: GridLayoutManager
-    //private var listProduct = arrayListOf<Product>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +49,7 @@ class Menu : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
     }
 
     override fun onCreateView(
@@ -56,20 +58,10 @@ class Menu : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_menu, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        /*val products = arrayListOf<Product>()
-        for(i in 0..100){
-            products.add(Product("Organic apple","this an image",1.99,"https://firebasestorage.googleapis.com/v0/b/isportshop-8959b.appspot.com/o/TqitZw7wrKkA0MaIdCio%2Fadidas_ball.jpg?alt=media&token=34434050-c98c-4698-b1d3-21ddc6895292",4))
-        }
-        recyclerView=view.findViewById(R.id.recycler_view)
-        gridLayoutManager = GridLayoutManager(context, 2)
-        recyclerView.layoutManager = gridLayoutManager
-        recyclerView.adapter = ProductsAdapter(products)*/
         searchBar=view.findViewById(R.id.searchBar)
         recyclerView=view.findViewById(R.id.recycler_view)
         progressBar=view.findViewById(R.id.progressBar)
@@ -104,20 +96,34 @@ class Menu : Fragment() {
             }
     }
 
-    fun searchMethod(){
-        var terms = searchBar.text.toString().lowercase().split(" ")
-        var term = searchBar.text.toString().lowercase()
+
+    fun isEmpty(word: String): Boolean{
+        if(word == ""){
+            return true;
+        }
+        return false;
+    }
+
+    fun setSearchState(newState : Boolean){
+        this.stateSearch = newState
+    }
+
+    fun getSearchState(): Boolean{
+        return this.stateSearch;
+    }
+
+    fun searchMethodC( term: String): Boolean{
+        var terms = term.lowercase().split(" ")
         var listProduct = arrayListOf<Product>()
-        progressBar.visibility = View.VISIBLE
-        Log.d(ContentValues.TAG, term)
-        if(term == ""){
+
+
+
+        if(isEmpty(term)){
             Firebase.firestore.collection("items")
                 .get()
                 .addOnSuccessListener { documents ->
-                    val list= arrayListOf<Product>()
-                    //listProduct.clear()
                     for (document in documents) {
-                        list.add(
+                        listProduct.add(
                             Product(
                                 document["name"].toString(),
                                 document["description"].toString(),
@@ -127,38 +133,46 @@ class Menu : Fragment() {
                             )
                         )
                     }
-
-                    listProduct = list.clone() as ArrayList<Product>
                     recyclerView.adapter = ProductsAdapter(listProduct)
                     Log.d(ContentValues.TAG, "Successful GET of products")
+                    setSearchState(true)
                     progressBar.visibility = View.GONE
                 }
                 .addOnFailureListener { exception ->
                     Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+                    setSearchState(false)
                 }
         }else{
-
             //Search by name explicit
             Firebase.firestore.collection("items").get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
-                        if(document["name"].toString().lowercase().equals(term)) {
-                            listProduct.add(
-                                Product(
-                                    document["name"].toString(),
-                                    document["description"].toString(),
-                                    document["price"].toString().toDouble(),
-                                    document["image"].toString(),
-                                    document["stock"].toString().toInt()
-                                )
-                            );
-                        }
+                        if(!listProduct.contains(Product(
+                                document["name"].toString(),
+                                document["description"].toString(),
+                                document["price"].toString().toDouble(),
+                                document["image"].toString(),
+                                document["stock"].toString().toInt()
+                            ))
+                        ) {
+                            if(document["name"].toString().lowercase().equals(term)) {
+                                listProduct.add(
+                                    Product(
+                                        document["name"].toString(),
+                                        document["description"].toString(),
+                                        document["price"].toString().toDouble(),
+                                        document["image"].toString(),
+                                        document["stock"].toString().toInt()
+                                    )
+                                );
+                            }}
                     }
                     Log.d(ContentValues.TAG, "Successful GET of products on names")
+                    setSearchState(true);
                 }.addOnFailureListener { exception ->
                     Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+                    setSearchState(false)
                 }
-
 
             //Search by name divided
             Firebase.firestore.collection("items").get()
@@ -174,7 +188,13 @@ class Menu : Fragment() {
                         ) {
                             var nameDocument = document["name"].toString().lowercase().split(" ")
                             for (word in terms) {
-                                if (nameDocument.indexOf(word) != -1) {
+                                if (nameDocument.indexOf(word) != -1 && !listProduct.contains(Product(
+                                        document["name"].toString(),
+                                        document["description"].toString(),
+                                        document["price"].toString().toDouble(),
+                                        document["image"].toString(),
+                                        document["stock"].toString().toInt()
+                                    ))) {
                                     listProduct.add(
                                         Product(
                                             document["name"].toString(),
@@ -189,10 +209,11 @@ class Menu : Fragment() {
                         }
                     }
                     Log.d(ContentValues.TAG, "Successful GET of products on names")
+                    setSearchState(true)
                 }.addOnFailureListener { exception ->
                     Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+                    setSearchState(false)
                 }
-
 
             //Search by category
             Firebase.firestore.collection("items").whereArrayContainsAny("category", terms).get().addOnSuccessListener { documents ->
@@ -205,26 +226,33 @@ class Menu : Fragment() {
                             document["stock"].toString().toInt()
                         ))
                     ) {
-                    listProduct.add(
-                        Product(
-                            document["name"].toString(),
-                            document["description"].toString(),
-                            document["price"].toString().toDouble(),
-                            document["image"].toString(),
-                            document["stock"].toString().toInt()
-                        )
-                    );
+                        listProduct.add(
+                            Product(
+                                document["name"].toString(),
+                                document["description"].toString(),
+                                document["price"].toString().toDouble(),
+                                document["image"].toString(),
+                                document["stock"].toString().toInt()
+                            )
+                        );
                     }
                 }
                 recyclerView.adapter = ProductsAdapter(listProduct)
                 Log.d(ContentValues.TAG, "Successful GET of products on categories")
                 progressBar.visibility = View.GONE
+                setSearchState(true)
             }.addOnFailureListener { exception ->
                 Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+                setSearchState(false)
             }
         }
+        return getSearchState();
+    }
 
-
+    fun searchMethod(){
+        var term = searchBar.text.toString().lowercase()
+        progressBar.visibility = View.VISIBLE
+        searchMethodC(term);
     }
 
     companion object {
