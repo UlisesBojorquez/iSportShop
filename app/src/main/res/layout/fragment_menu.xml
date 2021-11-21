@@ -39,14 +39,19 @@
         app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.03">
+        app:layout_constraintVertical_bias="0.03"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/searchBar"
             android:layout_width="299dp"
             android:layout_height="wrap_content"
             android:hint="search"
-            android:onClick="searchMethod" />
+            android:inputType="text"
+            android:onClick="searchMethod"
+            android:maxLines="1"
+            android:lines="1"
+            android:singleLine="true"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
