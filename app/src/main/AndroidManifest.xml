@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ISportShop">
         <activity
+            android:name=".ProductCartActivity"
+            android:exported="true" />
+        <activity
+            android:name=".classes.ProductsAdapterCart"
+            android:exported="true" />
+        <activity
+            android:name=".classes.ProductCart"
+            android:exported="true" />
+        <activity
             android:name=".ProductActivity"
             android:exported="true" />
         <activity
