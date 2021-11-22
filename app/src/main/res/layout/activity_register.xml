@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".RegisterActivity"
+    android:id="@+id/register">
 
     <Button
         android:id="@+id/btnSignUp"
@@ -21,7 +22,7 @@
         app:layout_constraintVertical_bias="0.234" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/linkSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="128dp"
@@ -30,11 +31,11 @@
         android:text="Sign In"
         android:textColor="#E11212"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintStart_toEndOf="@+id/labelAlreadyHaveAccount"
         app:layout_constraintTop_toTopOf="@+id/btnSignUp" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/labelAlreadyHaveAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="37dp"
@@ -42,31 +43,31 @@
         android:layout_marginBottom="45dp"
         android:text="Already have an account?"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textView6"
+        app:layout_constraintEnd_toStartOf="@+id/linkSignIn"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtPasswordRegister2" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/titleRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="49dp"
         android:layout_marginBottom="19dp"
         android:text="Create Account"
         android:textSize="34sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintBottom_toTopOf="@+id/labelRegister"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/labelRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="118dp"
         android:layout_marginBottom="76dp"
         android:text="Please fill the input below here"
         app:layout_constraintBottom_toTopOf="@+id/txtNameRegister"
-        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/titleRegister"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
@@ -83,7 +84,7 @@
         app:layout_constraintBottom_toTopOf="@+id/txtLastNameRegister"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/labelRegister" />
 
     <EditText
         android:id="@+id/txtPasswordRegister"
@@ -142,7 +143,7 @@
         android:hint="Confirm Password"
         android:inputType="textPassword"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/textView5"
+        app:layout_constraintBottom_toTopOf="@+id/labelAlreadyHaveAccount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtPasswordRegister" />
